@@ -1,21 +1,75 @@
 ---
-title: "Simple document"
-output: html_document
+title: "Data Import"
+output: github_document
 ---
 
-I'm an R Markdown document! 
-
-# Section 1
-
-Here's a **code chunk** that samples from 
-a _normal distribution_:
+This file is for doing data import
 
 ```{r}
-samp = rnorm(100)
-length(samp)
+library(tidyverse)
+```
+R wants to know where the files are (eg. where is the excel file?)
+
+Two ways to do this:
+
+- *Absolute path*: the full path from the "north pole"
+- *Relative path*: path from where you are right now. Easy if you are doing the rdirectory because it can be reproducible. ALWAYS use relative paths. 
+
+Import our first data set
+```{r}
+litters_df =
+  read_csv(file = "data/FAS_litters.csv",
+           na = c("", "NA", "."))
+#if there is something that looks like numbers but is assigned character, something is wrong
+#check the CSV and you will see that they used . and NA to represent NA values
+#to change this, you can rename the NA categories
+#there are many ways to data clean using read_csv
+
+litters_df = janitor :: clean_names(litters_df)
+
+#this makes the names in snake case rather than with a space 
 ```
 
-# Section 2
+Import your second data set
+```{r}
+pups_df =
+  read_csv(
+    file= "data/FAS_pups.csv", 
+    skip = 3,
+    na = c("", "NA", ".")) # this part allows you to skip the first three rows 
 
-I can take the mean of the sample, too!
-The mean is `r mean(samp)`.
+pups_df = janitor:: clean_names(pups_df) 
+#to prevent yourself to load too many libraries, you can use this format to use one function from a library without loading the entire thing. The package needs to be installed though. 
+
+```
+Head or tail 
+```{r}
+#look at the first rows of the data set
+head(litters_df, 20) #number tells you how many rows to show
+
+#look at the last rows of the data set 
+tail(litters_df,5)
+```
+
+Skimming 
+```{r}
+skimr::skim(pups_df)
+```
+
+Viewing
+```{r}
+#view(pups_df)
+#don't do this just do it in the console because otherwise every time you knit it will pop up an 
+#additional window to view the df
+```
+
+reading csv!
+
+Make sure you are using read_csv because read.csv is super old 
+
+## Oh excel...
+
+```{r}
+
+```
+
