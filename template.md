@@ -18,6 +18,11 @@ library(tidyverse)
     ## ✖ dplyr::lag()    masks stats::lag()
     ## ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
 
+``` r
+library(readxl)
+library(haven)
+```
+
 R wants to know where the files are (eg. where is the excel file?)
 
 Two ways to do this:
@@ -175,3 +180,84 @@ reading csv!
 Make sure you are using read_csv because read.csv is super old
 
 ## Oh excel…
+
+Jenny Bryan made ‘readxl’ to solve our problems
+
+``` r
+mlb11 =
+  read_excel("data/mlb11.xlsx")
+```
+
+Look at the data
+
+``` r
+mlb11
+```
+
+    ## # A tibble: 30 × 12
+    ##    team        runs at_bats  hits homeruns bat_avg strikeouts stolen_bases  wins
+    ##    <chr>      <dbl>   <dbl> <dbl>    <dbl>   <dbl>      <dbl>        <dbl> <dbl>
+    ##  1 Texas Ran…   855    5659  1599      210   0.283        930          143    96
+    ##  2 Boston Re…   875    5710  1600      203   0.28        1108          102    90
+    ##  3 Detroit T…   787    5563  1540      169   0.277       1143           49    95
+    ##  4 Kansas Ci…   730    5672  1560      129   0.275       1006          153    71
+    ##  5 St. Louis…   762    5532  1513      162   0.273        978           57    90
+    ##  6 New York …   718    5600  1477      108   0.264       1085          130    77
+    ##  7 New York …   867    5518  1452      222   0.263       1138          147    97
+    ##  8 Milwaukee…   721    5447  1422      185   0.261       1083           94    96
+    ##  9 Colorado …   735    5544  1429      163   0.258       1201          118    73
+    ## 10 Houston A…   615    5598  1442       95   0.258       1164          118    56
+    ## # ℹ 20 more rows
+    ## # ℹ 3 more variables: new_onbase <dbl>, new_slug <dbl>, new_obs <dbl>
+
+Load some LotR data
+
+Import FOTR words
+
+``` r
+fotr_df=
+  read_excel(
+    "data/LotR_Words.xlsx", 
+    range = "B3:D6" #top left corner to bottom right
+  )
+
+#look at ?read_excel to see how to specify the range 
+```
+
+What about the two towers?
+
+``` r
+tt_df=
+  read_excel(
+    "data/LotR_Words.xlsx", 
+    range = "F3:H6" #top left corner to bottom right
+  )
+
+tt_df
+```
+
+    ## # A tibble: 3 × 3
+    ##   Race   Female  Male
+    ##   <chr>   <dbl> <dbl>
+    ## 1 Elf       331   513
+    ## 2 Hobbit      0  2463
+    ## 3 Man       401  3589
+
+If you have excel file open while you are working in RStudio, it will
+pop up in your git window. It will disappear if you close excel. Never
+commit these.
+
+\##Import SAS
+
+Read in the PULSE data set
+
+``` r
+#similar structure to the others
+pulse_df=
+  read_sas("data/public_pulse_data.sas7bdat")
+
+pulse_df = janitor:: clean_names(pulse_df)
+
+#don't make variables capital, makes your variables follow a clean naming
+#convention
+```

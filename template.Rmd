@@ -7,6 +7,8 @@ This file is for doing data import
 
 ```{r}
 library(tidyverse)
+library(readxl)
+library(haven)
 ```
 R wants to know where the files are (eg. where is the excel file?)
 
@@ -69,7 +71,57 @@ Make sure you are using read_csv because read.csv is super old
 
 ## Oh excel...
 
-```{r}
 
+Jenny Bryan made 'readxl' to solve our problems
+```{r}
+mlb11 =
+  read_excel("data/mlb11.xlsx")
+
+```
+
+Look at the data
+```{r}
+mlb11
+```
+
+Load some LotR data
+
+Import FOTR words
+```{r}
+fotr_df=
+  read_excel(
+    "data/LotR_Words.xlsx", 
+    range = "B3:D6" #top left corner to bottom right
+  )
+
+#look at ?read_excel to see how to specify the range 
+```
+
+What about the two towers?
+```{r}
+tt_df=
+  read_excel(
+    "data/LotR_Words.xlsx", 
+    range = "F3:H6" #top left corner to bottom right
+  )
+
+tt_df
+```
+
+If you have excel file open while you are working in RStudio, it will pop up in your git window. It will disappear if you close excel. Never commit these. 
+
+##Import SAS
+
+Read in the PULSE data set
+
+```{r}
+#similar structure to the others
+pulse_df=
+  read_sas("data/public_pulse_data.sas7bdat")
+
+pulse_df = janitor:: clean_names(pulse_df)
+
+#don't make variables capital, makes your variables follow a clean naming
+#convention
 ```
 
